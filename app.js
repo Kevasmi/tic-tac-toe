@@ -1,10 +1,3 @@
-const playerFactory = (name) => {
-    let array = [];
-    return {name, array}
-};
-
-const player1 = playerFactory('Player 1');
-
 // console.log(player1.array);
 
 let gameBoard = (function() {
@@ -19,9 +12,9 @@ let gameBoard = (function() {
             const gameBoardContainer = document.querySelector('.gameboard');
             const squares = document.querySelectorAll('.square');
             const o = document.createElement('img');
-            o.src = 'images/O.png'
+            o.src = 'images/O.png';
             const x = document.createElement('img');
-            x.src = 'images/X.png'
+            x.src = 'images/X.png';
             return {squares, gameBoardContainer, o, x};
         },
         render: function render(gameBoardArr, cache) {
@@ -38,6 +31,14 @@ let gameBoard = (function() {
 
 })();
 
+const playerFactory = (name, marker) => {
+    let array = [];
+    return {name, array, marker}
+};
+
+const player1 = playerFactory('Player 1', gameBoard.x);
+
+
 let gameFlow = (function() {
 
     const gameFlow = {
@@ -47,11 +48,12 @@ let gameFlow = (function() {
         },
         bindEvents: function bindEvents(squares) {
             squares.forEach(square => {
-                square.addEventListener('click', (e) => {
-                    e.target.appendChild(gameBoard.o)
-                })
+                square.addEventListener('click', this.addMarker())
             });
-        }
+        },
+        addMarker: function addMarker(e) {
+            e.target.appendChild(gameBoard.o);
+        },
     }
 
 
