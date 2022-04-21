@@ -7,7 +7,7 @@ const player1 = playerFactory('Player 1');
 
 // console.log(player1.array);
 
-(function() {
+let gameBoard = (function() {
 
     const gameBoard = {
         gameBoardArr: [1,2,3,4,5,6,7,8,9],
@@ -18,7 +18,11 @@ const player1 = playerFactory('Player 1');
         cacheDom: function cacheDom() {
             const gameBoardContainer = document.querySelector('.gameboard');
             const squares = document.querySelectorAll('.square');
-            return {squares, gameBoardContainer};
+            const o = document.createElement('img');
+            o.src = 'images/O.png'
+            const x = document.createElement('img');
+            x.src = 'images/X.png'
+            return {squares, gameBoardContainer, o, x};
         },
         render: function render(gameBoardArr, cache) {
             gameBoardArr.forEach(number => {
@@ -30,20 +34,23 @@ const player1 = playerFactory('Player 1');
         },
     };
 
-    return gameBoard.init()
+    return gameBoard.init(), gameBoard.cacheDom()
 
 })();
 
-(function() {
+let gameFlow = (function() {
 
     const gameFlow = {
         init: function init() {
-            let squares = gameBoard.init().cache.squares
-            console.log('squares')
+            let squares = gameBoard.squares
             this.bindEvents(squares)
         },
         bindEvents: function bindEvents(squares) {
-
+            squares.forEach(square => {
+                square.addEventListener('click', (e) => {
+                    e.target.appendChild(gameBoard.o)
+                })
+            });
         }
     }
 
