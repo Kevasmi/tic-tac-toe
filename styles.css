@@ -45,7 +45,13 @@ main {
 }
 
 .square {
+    font-weight: bold;
+    padding: .3rem;
     width: 150px;
     height: 150px;
     border: 3px black solid;
+}
+
+.transparent {
+    color: transparent;
 }
