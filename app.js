@@ -34,6 +34,7 @@ const playerFactory = (name, marker) => {
 
 const player1 = playerFactory('Player 1', gameBoard.x);
 
+const player2 = playerFactory('Player 2', gameBoard.o);
 
 let gameFlow = (function() {
 
@@ -52,20 +53,50 @@ let gameFlow = (function() {
                             x.setAttribute('id', 'check')
                             square.insertBefore(x, square.children[e.target])
                             square.classList.add('transparent')
+                            player1.array.push(e.target.textContent)
+                            console.log(player1.array)
+                            if (this.checkForWin()) {
+                                console.log('Player 1 wins!')
+                            } else if ((player1.array.length === 5) && (player2.array.length === 4)) {
+                                console.log(`It\'s a draw!`)
+                            }
                         } else {
                             const o = document.createElement('img');
                             o.src = 'images/O.png';
                             o.setAttribute('id', 'check')
                             square.insertBefore(o, square.children[e.target])
                             square.classList.add('transparent')
+                            player2.array.push(e.target.textContent)
+                            console.log(player2.array)
+                            if (this.checkForWin()) {
+                                console.log('Player 2 wins!')
+                            } else if ((player1.array.length === 5) && (player2.array.length === 4)) {
+                                console.log(`It\'s a draw!`)
+                            }
                         }
                         isXTurn = !isXTurn;
                     }
                 })
             });
         },
-        addMarker: function addMarker(e) {
-            e.target.appendChild(gameBoard.o);
+        checkForWin: function checkForWin() {
+            if (((player1.array.includes('1')) && (player1.array.includes('2')) && (player1.array.includes('3'))) || ((player2.array.includes('1')) && (player2.array.includes('2')) && (player2.array.includes('3')))) {
+                return true
+            } else if (((player1.array.includes('4')) && (player1.array.includes('5')) && (player1.array.includes('6'))) || ((player2.array.includes('4')) && (player2.array.includes('5')) && (player2.array.includes('6')))) {
+                return true
+            } else if (((player1.array.includes('7')) && (player1.array.includes('8')) && (player1.array.includes('9'))) || ((player2.array.includes('7')) && (player2.array.includes('8')) && (player2.array.includes('9')))) {
+                return true
+            } else if (((player1.array.includes('1')) && (player1.array.includes('4')) && (player1.array.includes('7'))) || ((player2.array.includes('1')) && (player2.array.includes('4')) && (player2.array.includes('7')))) {
+                return true
+            } else if (((player1.array.includes('2')) && (player1.array.includes('5')) && (player1.array.includes('8'))) || ((player2.array.includes('2')) && (player2.array.includes('5')) && (player2.array.includes('8')))) {
+                return true
+            } else if (((player1.array.includes('3')) && (player1.array.includes('6')) && (player1.array.includes('9'))) || ((player2.array.includes('3')) && (player2.array.includes('6')) && (player2.array.includes('9')))) {
+                return true
+            } else if (((player1.array.includes('1')) && (player1.array.includes('5')) && (player1.array.includes('9'))) || ((player2.array.includes('1')) && (player2.array.includes('5')) && (player2.array.includes('9')))) {
+                return true
+            } else if (((player1.array.includes('3')) && (player1.array.includes('5')) && (player1.array.includes('7'))) || ((player2.array.includes('3')) && (player2.array.includes('5')) && (player2.array.includes('7')))) {
+                return true
+            }
         },
     }
 
