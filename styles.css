@@ -18,6 +18,24 @@ body {
     "main";
 }
 
+button {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: .9rem;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    width: 6rem;
+    height: 2rem;
+}
+
+button:hover {
+    color: #ffffffb7;
+    background-color: #000000b7;
+    cursor: pointer;
+}
+
 img {
     position: absolute;
     left: 7px;
@@ -38,6 +56,18 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.win-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.button-box {
+    display: flex;
+    gap: 14rem;
 }
 
 .gameboard {
@@ -45,7 +75,6 @@ main {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     box-shadow: 5px 5px 13px -2px #000000;
-    margin-top: 1.3rem;
 }
 
 .square {

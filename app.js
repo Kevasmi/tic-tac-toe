@@ -1,5 +1,5 @@
 let isXTurn = true;
-
+let isGameStarted = false;
 let gameBoard = (function() {
 
     const gameBoard = {
@@ -11,7 +11,10 @@ let gameBoard = (function() {
         cacheDom: function cacheDom() {
             const gameBoardContainer = document.querySelector('.gameboard');
             const squares = document.querySelectorAll('.square');
-            return {squares, gameBoardContainer};
+            const startGame = document.querySelector('.start-game');
+            const resetGame = document.querySelector('.reset-game');
+            const winTextBox = document.querySelector('.win-text-box');
+            return {squares, gameBoardContainer, startGame, resetGame, winTextBox};
         },
         render: function render(gameBoardArr, cache) {
             gameBoardArr.forEach(number => {
@@ -40,42 +43,83 @@ let gameFlow = (function() {
 
     const gameFlow = {
         init: function init() {
-            let squares = gameBoard.squares
-            this.bindEvents(squares)
+            const startButton = gameBoard.startGame;
+            const resetButton = gameBoard.resetGame;
+            const winTextBox = gameBoard.winTextBox
+            const squares = gameBoard.squares;
+            this.bindEvents(squares, winTextBox, startButton, resetButton)
         },
-        bindEvents: function bindEvents(squares) {
+        bindEvents: function bindEvents(squares, winTextBox, startButton, resetButton) {
+            startButton.addEventListener('click', () => {
+                isGameStarted = true;
+                isXTurn = true;
+                player1.array = []
+                player2.array = []
+            });
+            resetButton.addEventListener('click', () => {
+                isXTurn = true;
+                player1.array = []
+                player2.array = []
+                this.removeChildren(winTextBox)
+                const markers = document.querySelectorAll('#check')
+                markers.forEach(mark => {
+                    mark.remove();
+                })
+                squares.forEach(square => {
+                    square.classList.remove('transparent')
+                })
+            })
             squares.forEach(square => {
                 square.addEventListener('click', e => {
-                    if (!(e.target.id === 'check')) {
-                        if (isXTurn) {
-                            const x = document.createElement('img');
-                            x.src = 'images/X.png';
-                            x.setAttribute('id', 'check')
-                            square.insertBefore(x, square.children[e.target])
-                            square.classList.add('transparent')
-                            player1.array.push(e.target.textContent)
-                            console.log(player1.array)
-                            if (this.checkForWin()) {
-                                console.log('Player 1 wins!')
-                            } else if ((player1.array.length === 5) && (player2.array.length === 4)) {
-                                console.log(`It\'s a draw!`)
+                    if (isGameStarted) {
+                        if (!(e.target.id === 'check')) {
+                            if (isXTurn) {
+                                const x = document.createElement('img');
+                                x.src = 'images/X.png';
+                                x.setAttribute('id', 'check')
+                                square.insertBefore(x, square.children[e.target])
+                                square.classList.add('transparent')
+                                player1.array.push(e.target.textContent)
+                                if (this.checkForWin()) {
+                                    const winText = document.createElement('p');
+                                    winText.textContent = 'Player 1 wins!'
+                                    winText.classList.add('win-text')
+                                    winTextBox.appendChild(winText)
+                                    isGameStarted = false;
+                                } else if ((player1.array.length === 5) && (player2.array.length === 4)) {
+                                    const winText = document.createElement('p');
+                                    winText.textContent = `It\s a draw!`
+                                    winText.classList.add('win-text')
+                                    winTextBox.appendChild(winText)
+                                    isGameStarted = false;
+
+                                }
+                            } else {
+                                const o = document.createElement('img');
+                                o.src = 'images/O.png';
+                                o.setAttribute('id', 'check')
+                                square.insertBefore(o, square.children[e.target])
+                                square.classList.add('transparent')
+                                player2.array.push(e.target.textContent)
+                                if (this.checkForWin()) {
+                                    const winText = document.createElement('p');
+                                    winText.textContent = 'Player 2 wins!'
+                                    winText.classList.add('win-text')
+                                    winTextBox.appendChild(winText)
+                                    isGameStarted = false;
+
+                                } else if ((player1.array.length === 5) && (player2.array.length === 4)) {
+                                    const winText = document.createElement('p');
+                                    winText.textContent = `It\s a draw!`
+                                    winText.classList.add('win-text')
+                                    winTextBox.appendChild(winText)
+                                    isGameStarted = false;
+
+                                }
                             }
-                        } else {
-                            const o = document.createElement('img');
-                            o.src = 'images/O.png';
-                            o.setAttribute('id', 'check')
-                            square.insertBefore(o, square.children[e.target])
-                            square.classList.add('transparent')
-                            player2.array.push(e.target.textContent)
-                            console.log(player2.array)
-                            if (this.checkForWin()) {
-                                console.log('Player 2 wins!')
-                            } else if ((player1.array.length === 5) && (player2.array.length === 4)) {
-                                console.log(`It\'s a draw!`)
-                            }
-                        }
                         isXTurn = !isXTurn;
                     }
+                }
                 })
             });
         },
@@ -98,10 +142,15 @@ let gameFlow = (function() {
                 return true
             }
         },
+        removeChildren: function removeChildren (element) {
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+        }
     }
 
     return gameFlow.init()
 
 })();
 
-
+console.log(gameBoard.markers)
