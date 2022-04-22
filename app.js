@@ -1,4 +1,4 @@
-// console.log(player1.array);
+let isXTurn = true;
 
 let gameBoard = (function() {
 
@@ -11,11 +11,7 @@ let gameBoard = (function() {
         cacheDom: function cacheDom() {
             const gameBoardContainer = document.querySelector('.gameboard');
             const squares = document.querySelectorAll('.square');
-            const o = document.createElement('img');
-            o.src = 'images/O.png';
-            const x = document.createElement('img');
-            x.src = 'images/X.png';
-            return {squares, gameBoardContainer, o, x};
+            return {squares, gameBoardContainer};
         },
         render: function render(gameBoardArr, cache) {
             gameBoardArr.forEach(number => {
@@ -48,14 +44,30 @@ let gameFlow = (function() {
         },
         bindEvents: function bindEvents(squares) {
             squares.forEach(square => {
-                square.addEventListener('click', this.addMarker())
+                square.addEventListener('click', e => {
+                    if (!(e.target.id === 'check')) {
+                        if (isXTurn) {
+                            const x = document.createElement('img');
+                            x.src = 'images/X.png';
+                            x.setAttribute('id', 'check')
+                            square.insertBefore(x, square.children[e.target])
+                            square.classList.add('transparent')
+                        } else {
+                            const o = document.createElement('img');
+                            o.src = 'images/O.png';
+                            o.setAttribute('id', 'check')
+                            square.insertBefore(o, square.children[e.target])
+                            square.classList.add('transparent')
+                        }
+                        isXTurn = !isXTurn;
+                    }
+                })
             });
         },
         addMarker: function addMarker(e) {
             e.target.appendChild(gameBoard.o);
         },
     }
-
 
     return gameFlow.init()
 

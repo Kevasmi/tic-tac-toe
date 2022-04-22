@@ -18,6 +18,13 @@ body {
     "main";
 }
 
+img {
+    position: absolute;
+    left: 7px;
+    height: 90%;
+    width: 90%;
+}
+
 header {
     grid-area: header;
     display: flex;
@@ -42,6 +49,7 @@ main {
 }
 
 .square {
+    position: relative;
     font-weight: bold;
     padding: .3rem;
     width: 150px;
