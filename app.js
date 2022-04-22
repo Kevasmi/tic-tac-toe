@@ -14,7 +14,8 @@ let gameBoard = (function() {
             const startGame = document.querySelector('.start-game');
             const resetGame = document.querySelector('.reset-game');
             const winTextBox = document.querySelector('.win-text-box');
-            return {squares, gameBoardContainer, startGame, resetGame, winTextBox};
+            const buttonBox = document.querySelector('.button-box')
+            return {squares, gameBoardContainer, startGame, resetGame, winTextBox, buttonBox};
         },
         render: function render(gameBoardArr, cache) {
             gameBoardArr.forEach(number => {
@@ -47,17 +48,22 @@ let gameFlow = (function() {
             const resetButton = gameBoard.resetGame;
             const winTextBox = gameBoard.winTextBox
             const squares = gameBoard.squares;
-            this.bindEvents(squares, winTextBox, startButton, resetButton)
+            const buttonBox = gameBoard.buttonBox;
+            this.bindEvents(squares, winTextBox, startButton, resetButton, buttonBox)
         },
-        bindEvents: function bindEvents(squares, winTextBox, startButton, resetButton) {
+        bindEvents: function bindEvents(squares, winTextBox, startButton, resetButton, buttonBox) {
             startButton.addEventListener('click', () => {
+                const circle = document.createElement('div');
+                circle.classList.add('circle');
+                buttonBox.appendChild(circle);
                 isGameStarted = true;
                 isXTurn = true;
-                player1.array = []
-                player2.array = []
+                player1.array = [];
+                player2.array = [];
             });
             resetButton.addEventListener('click', () => {
                 isXTurn = true;
+                isGameStarted = true;
                 player1.array = []
                 player2.array = []
                 this.removeChildren(winTextBox)
@@ -152,5 +158,3 @@ let gameFlow = (function() {
     return gameFlow.init()
 
 })();
-
-console.log(gameBoard.markers)
